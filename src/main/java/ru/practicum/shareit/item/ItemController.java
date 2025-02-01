@@ -26,6 +26,7 @@ import java.util.Collection;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemService itemService;
+    public static final String ITEM_ID_PATH = "/{item-id}";
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -34,7 +35,7 @@ public class ItemController {
         return itemService.findByUserId(userId);
     }
 
-    @GetMapping("/{item-id}")
+    @GetMapping(ITEM_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public ItemDto getItem(@PathVariable("item-id") long itemId) {
         log.info("Fetching item with id: {}", itemId);
@@ -48,7 +49,7 @@ public class ItemController {
         return itemService.addItem(itemDto, userId);
     }
 
-    @PatchMapping("/{item-id}")
+    @PatchMapping(ITEM_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                               @PathVariable("item-id") long itemId, @Valid @RequestBody ItemUpdateDto itemDto) {
@@ -56,7 +57,7 @@ public class ItemController {
         return itemService.updateItem(itemDto, userId, itemId);
     }
 
-    @DeleteMapping("/{item-id}")
+    @DeleteMapping(ITEM_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteItem(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable("item-id") long itemId) {
         log.info("Deleting item with id: {} for user with id: {}", itemId, userId);
