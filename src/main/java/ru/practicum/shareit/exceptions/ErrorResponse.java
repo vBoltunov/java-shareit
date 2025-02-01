@@ -1,11 +1,14 @@
 package ru.practicum.shareit.exceptions;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
+@FieldDefaults(makeFinal=true, level = AccessLevel.PRIVATE)
 public class ErrorResponse {
-    private final String error;
-    private final String message;
+    String error;
+    String message;
 }
