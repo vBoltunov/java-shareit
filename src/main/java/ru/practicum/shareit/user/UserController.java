@@ -23,6 +23,7 @@ import java.util.Collection;
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserService userService;
+    public static final String USER_ID_PATH = "/{user-id}";
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -31,7 +32,7 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("/{user-id}")
+    @GetMapping(USER_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public UserDto getUser(@PathVariable("user-id") Long userId) {
         log.info("Fetching user by id: {}.", userId);
@@ -45,14 +46,14 @@ public class UserController {
         return userService.createUser(userDTO);
     }
 
-    @PatchMapping("/{user-id}")
+    @PatchMapping(USER_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public UserDto updateUser(@PathVariable("user-id") Long userId, @Valid @RequestBody UserDto userDTO) {
         log.info("Updating user with id: {}", userId);
         return userService.updateUser(userId, userDTO);
     }
 
-    @DeleteMapping("/{user-id}")
+    @DeleteMapping(USER_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("user-id") Long userId) {
         log.info("Deleting user with id: {}", userId);
