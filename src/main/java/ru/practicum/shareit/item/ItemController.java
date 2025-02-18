@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
+import static ru.practicum.shareit.util.HeaderConstants.USER_ID_HEADER;
 
 import java.util.Collection;
 
@@ -31,7 +32,7 @@ public class ItemController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public Collection<ItemDto> getItems(@RequestHeader(USER_ID_HEADER) long userId) {
         log.info("Fetching all items for user with id: {}", userId);
         return itemService.findByUserId(userId);
     }
@@ -45,14 +46,14 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto addItem(@RequestHeader("X-Sharer-User-Id") long userId, @Valid @RequestBody ItemDto itemDto) {
+    public ItemDto addItem(@RequestHeader(USER_ID_HEADER) long userId, @Valid @RequestBody ItemDto itemDto) {
         log.info("Adding new item for user with id: {}", userId);
         return itemService.addItem(itemDto, userId);
     }
 
     @PatchMapping(ITEM_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDto updateItem(@RequestHeader(USER_ID_HEADER) long userId,
                               @PathVariable("item-id") long itemId, @Valid @RequestBody ItemUpdateDto itemDto) {
         log.info("Updating item with id: {} for user with id: {}", itemId, userId);
         return itemService.updateItem(itemDto, userId, itemId);
@@ -60,7 +61,7 @@ public class ItemController {
 
     @DeleteMapping(ITEM_ID_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteItem(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable("item-id") long itemId) {
+    public void deleteItem(@RequestHeader(USER_ID_HEADER) long userId, @PathVariable("item-id") long itemId) {
         log.info("Deleting item with id: {} for user with id: {}", itemId, userId);
         itemService.deleteItem(userId, itemId);
     }
@@ -74,7 +75,7 @@ public class ItemController {
 
     @PostMapping(ITEM_ID_PATH + "/comment")
     @ResponseStatus(HttpStatus.OK)
-    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public CommentDto addComment(@RequestHeader(USER_ID_HEADER) Long userId,
                                  @PathVariable("item-id") Long itemId,
                                  @RequestBody CommentDto commentDto) {
         log.info("Adding comment to item with id: {} by user with id: {}", itemId, userId);
