@@ -22,7 +22,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     public static final String USER_ID_PATH = "/{user-id}";
 
     @GetMapping
