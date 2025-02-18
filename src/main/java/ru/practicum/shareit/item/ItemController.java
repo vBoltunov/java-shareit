@@ -25,7 +25,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RequestMapping("/items")
 public class ItemController {
-    private final ItemService itemService;
+    private final ItemServiceImpl itemService;
     public static final String ITEM_ID_PATH = "/{item-id}";
 
     @GetMapping
