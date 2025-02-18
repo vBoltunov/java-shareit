@@ -48,8 +48,13 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleInternalErrors(final Throwable e) {
         return new ErrorResponse(
-                "error:", "Произошла непредвиденная ошибка:" + e.getMessage()
+                "error:", "Произошла непредвиденная ошибка: " + e.getMessage()
         );
     }
-}
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleForbidden(final ForbiddenException e) {
+        return new ErrorResponse("error:", e.getMessage());
+    }
+}
