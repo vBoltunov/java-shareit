@@ -15,7 +15,7 @@ import java.util.Collection;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ItemService {
+public class ItemServiceImpl {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
