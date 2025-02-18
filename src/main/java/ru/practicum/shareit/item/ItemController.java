@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 
@@ -69,5 +70,14 @@ public class ItemController {
     public Collection<ItemDto> searchItems(@RequestParam("text") String text) {
         log.info("Searching items with text: {}", text);
         return itemService.searchItems(text);
+    }
+
+    @PostMapping(ITEM_ID_PATH + "/comment")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @PathVariable("item-id") Long itemId,
+                                 @RequestBody CommentDto commentDto) {
+        log.info("Adding comment to item with id: {} by user with id: {}", itemId, userId);
+        return itemService.addComment(itemId, userId, commentDto);
     }
 }
