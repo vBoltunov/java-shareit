@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS comments (
     );
 
 CREATE TABLE IF NOT EXISTS bookings (
-    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id SERIAL PRIMARY KEY,
     start_time TIMESTAMP,
     end_time TIMESTAMP,
     item_id BIGINT,
