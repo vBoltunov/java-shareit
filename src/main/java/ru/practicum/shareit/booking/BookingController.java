@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import static ru.practicum.shareit.util.HeaderConstants.USER_ID_HEADER;
 
 import java.util.Collection;
 
@@ -18,7 +19,7 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingDto createBooking(@RequestHeader("X-Sharer-User-Id") Long bookerId,
+    public BookingDto createBooking(@RequestHeader(USER_ID_HEADER) Long bookerId,
                                     @RequestBody BookingDto bookingDto) {
         log.info("Creating booking for user with id: {}", bookerId);
         return bookingService.createBooking(bookingDto, bookerId);
@@ -26,7 +27,7 @@ public class BookingController {
 
     @PatchMapping(BOOKING_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto approveBooking(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public BookingDto approveBooking(@RequestHeader(USER_ID_HEADER) Long ownerId,
                                      @PathVariable("booking-id") Long bookingId,
                                      @RequestParam boolean approved) {
         log.info("Approving booking with id: {} by user with id: {}", bookingId, ownerId);
@@ -35,7 +36,7 @@ public class BookingController {
 
     @GetMapping(BOOKING_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingDto getBookingById(@RequestHeader(USER_ID_HEADER) Long userId,
                                      @PathVariable("booking-id") Long bookingId) {
         log.info("Fetching booking with id: {} for user with id: {}", bookingId, userId);
         return bookingService.getBookingById(bookingId, userId);
@@ -44,7 +45,7 @@ public class BookingController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<BookingDto> getBookingsByBookerId(
-            @RequestHeader("X-Sharer-User-Id") Long bookerId,
+            @RequestHeader(USER_ID_HEADER) Long bookerId,
             @RequestParam(defaultValue = "ALL") String state) {
         log.info("Fetching bookings for booker with id: {} and state: {}", bookerId, state);
         BookingState bookingState = BookingState.valueOf(state.toUpperCase());
@@ -53,7 +54,7 @@ public class BookingController {
 
     @GetMapping("/owner")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<BookingDto> getBookingsByOwnerId(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public Collection<BookingDto> getBookingsByOwnerId(@RequestHeader(USER_ID_HEADER) Long ownerId) {
         log.info("Fetching bookings for owner with id: {}", ownerId);
         return bookingService.getBookingsByOwnerId(ownerId);
     }
