@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
  * It uses the `@Email` validation annotation to ensure that the user's email is a valid email address.
  * It uses the `@Data` annotation to automatically generate boilerplate code like getters, setters, and constructors.
  * It uses the `@FieldDefaults` annotation to set all fields' access level to `private`.
+ *
  * The `id` field represents the unique identifier of the user.
  * The `name` field represents the name of the user.
  * The `email` field represents the email address of the user and is validated to ensure it is a valid email address.
