@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import static ru.practicum.shareit.util.HeaderConstants.USER_ID_HEADER;
+import static ru.practicum.shareit.util.PathConstants.BOOKING_ID_PATH;
 
 import java.util.Collection;
 
@@ -15,7 +16,6 @@ import java.util.Collection;
 @RequestMapping(path = "/bookings")
 public class BookingController {
     private final BookingServiceImpl bookingService;
-    public static final String BOOKING_ID_PATH = "/{booking-id}";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
