@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.user.dto.UserDto;
+import static ru.practicum.shareit.util.PathConstants.USER_ID_PATH;
 
 import java.util.Collection;
 
@@ -23,7 +24,6 @@ import java.util.Collection;
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserServiceImpl userService;
-    public static final String USER_ID_PATH = "/{user-id}";
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
