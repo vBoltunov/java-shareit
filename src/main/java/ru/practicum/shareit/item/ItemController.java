@@ -19,6 +19,7 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import static ru.practicum.shareit.util.HeaderConstants.USER_ID_HEADER;
+import static ru.practicum.shareit.util.PathConstants.ITEM_ID_PATH;
 
 import java.util.Collection;
 
@@ -28,7 +29,6 @@ import java.util.Collection;
 @RequestMapping("/items")
 public class ItemController {
     private final ItemServiceImpl itemService;
-    public static final String ITEM_ID_PATH = "/{item-id}";
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
