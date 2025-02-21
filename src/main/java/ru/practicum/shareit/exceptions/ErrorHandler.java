@@ -16,67 +16,61 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(final NotFoundException e) {
-        Map<String, String> messages = new HashMap<>();
-        messages.put("error", e.getMessage());
-        return new ErrorResponse("error:", messages);
+        return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage(), null).getBody();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleInternalErrors(final Throwable e) {
-        Map<String, String> messages = new HashMap<>();
-        messages.put("error", "Произошла непредвиденная ошибка: " + e.getMessage());
-        return new ErrorResponse("error:", messages);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Произошла непредвиденная ошибка: " + e.getMessage(), null).getBody();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleForbidden(final ForbiddenException e) {
-        Map<String, String> messages = new HashMap<>();
-        messages.put("error", e.getMessage());
-        return new ErrorResponse("error:", messages);
+        return buildErrorResponse(HttpStatus.FORBIDDEN, e.getMessage(), null).getBody();
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})
     public ResponseEntity<ErrorResponse> handleValidationExceptions(Exception e) {
-        Map<String, String> errors = new HashMap<>();
+        HttpStatus status;
         String errorMessage;
+        Map<String, String> errors = new HashMap<>();
 
         if (e instanceof MethodArgumentNotValidException ex) {
             ex.getBindingResult().getFieldErrors().forEach(error ->
                     errors.put(error.getField(), error.getDefaultMessage())
             );
             errorMessage = "Validation Error";
-            ErrorResponse response = ErrorResponse.builder()
-                    .error(errorMessage)
-                    .messages(errors)
-                    .build();
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            status = HttpStatus.BAD_REQUEST;
         } else if (e instanceof IllegalArgumentException) {
             errorMessage = e.getMessage();
-            if ("Email must be provided".equals(errorMessage) || "Invalid email format".equals(errorMessage)) {
-                errors.put("error", errorMessage);
-                ErrorResponse response = ErrorResponse.builder()
-                        .error("Validation Error")
-                        .messages(errors)
-                        .build();
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            } else {
-                errors.put("error", errorMessage);
-                ErrorResponse response = ErrorResponse.builder()
-                        .error("Conflict Error")
-                        .messages(errors)
-                        .build();
-                return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-            }
+            status = ("Email must be provided".equals(errorMessage) ||
+                    "Invalid email format".equals(errorMessage))
+                    ? HttpStatus.BAD_REQUEST
+                    : HttpStatus.CONFLICT;
+            errors.put("error", errorMessage);
+        } else {
+            errorMessage = "Internal Server Error";
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            errors.put("error", errorMessage);
         }
 
-        errorMessage = "Internal Server Error";
-        errors.put("error", errorMessage);
+        return buildErrorResponse(status, errorMessage, errors);
+    }
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status,
+                                                             String errorMessage,
+                                                             Map<String, String> errors) {
+        if (errors == null) {
+            errors = new HashMap<>();
+            errors.put("error", errorMessage);
+        }
         ErrorResponse response = ErrorResponse.builder()
                 .error(errorMessage)
                 .messages(errors)
                 .build();
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, status);
     }
 }
