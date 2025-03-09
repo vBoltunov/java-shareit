@@ -7,6 +7,7 @@ import ru.practicum.shareit.booking.enums.BookingStatus;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
@@ -25,18 +26,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b FROM Booking b WHERE b.booker.userId = :bookerId AND b.startTime > :now ORDER BY b.startTime DESC")
     Collection<Booking> findFutureBookingsByBookerId(@Param("bookerId") Long bookerId, @Param("now") LocalDateTime now);
 
-    @Query("SELECT CASE WHEN COUNT(b) > 0 THEN TRUE ELSE FALSE END " +
-            "FROM Booking b " +
-            "WHERE b.booker.userId = :bookerId " +
-            "AND b.item.itemId = :itemId " +
-            "AND b.endTime < :endTime")
-    boolean existsBooking(@Param("bookerId") Long bookerId,
-                          @Param("itemId") Long itemId,
-                          @Param("endTime") LocalDateTime endTime);
-
     @Query("SELECT b FROM Booking b WHERE b.item.itemId = :itemId AND b.endTime < CURRENT_TIMESTAMP ORDER BY b.endTime DESC")
     Booking findLastBookingForItem(@Param("itemId") Long itemId);
 
     @Query("SELECT b FROM Booking b WHERE b.item.itemId = :itemId AND b.startTime > CURRENT_TIMESTAMP ORDER BY b.startTime ASC")
     Booking findNextBookingForItem(@Param("itemId") Long itemId);
+
+    @Query("SELECT b FROM Booking b WHERE b.booker.userId = :bookerId AND b.item.itemId = :itemId")
+    List<Booking> findByBookerUserIdAndItemItemId(@Param("bookerId") Long bookerId, @Param("itemId") Long itemId);
 }
