@@ -21,7 +21,7 @@ public class ItemMapper {
         itemDto.setDescription(item.getDescription());
         itemDto.setAvailable(item.isAvailable());
         itemDto.setOwner(item.getOwnerId());
-        itemDto.setRequest(item.getRequest());
+        itemDto.setRequestId(item.getRequest() != null ? item.getRequest().getRequestId() : null);
         itemDto.setComments(item.getComments() != null ?
                 item.getComments().stream()
                         .map(CommentMapper::convertToDto)
@@ -57,5 +57,4 @@ public class ItemMapper {
             item.setRequest(itemUpdateDto.getRequest());
         }
     }
-
 }
