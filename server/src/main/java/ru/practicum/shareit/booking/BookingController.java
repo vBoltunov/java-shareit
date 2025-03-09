@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.enums.BookingState;
+import ru.practicum.shareit.enums.BookingState;
 import ru.practicum.shareit.util.HeaderConstants;
 import ru.practicum.shareit.util.PathConstants;
 
