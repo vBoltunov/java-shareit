@@ -1,4 +1,4 @@
-package ru.practicum.shareit.exceptions;
+package shareit.exceptions;
 
 public class ForbiddenException extends RuntimeException {
     public ForbiddenException(String message) {
