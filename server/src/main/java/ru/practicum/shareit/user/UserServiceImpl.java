@@ -28,9 +28,14 @@ public class UserServiceImpl implements UserService {
 
     public UserDto createUser(UserDto userDto) {
         validateEmail(userDto.getEmail());
+        log.info("Creating user: {}", userDto);
         User user = UserMapper.convertToEntity(userDto);
         User createdUser = userRepository.save(user);
-        return UserMapper.convertToDto(createdUser);
+        log.info("User saved in DB: id={}, name={}, email={}",
+                createdUser.getUserId(), createdUser.getName(), createdUser.getEmail());
+        UserDto result = UserMapper.convertToDto(createdUser);
+        log.info("Returning UserDto: {}", result);
+        return result;
     }
 
     public UserDto updateUser(Long userId, UserDto userDto) {
@@ -53,6 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public void deleteUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException(String.format("User with id %s not found", userId));
+        }
         userRepository.deleteById(userId);
         log.info("User deleted successfully: id = {}", userId);
     }
