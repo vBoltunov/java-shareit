@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
+import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -12,6 +13,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
@@ -19,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -28,6 +32,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
+    private final ItemRequestRepository requestRepository;
 
     @Override
     public Collection<ItemDto> findByUserId(long userId) {
@@ -61,7 +66,16 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Field 'available' is required");
         }
 
-        Item item = ItemMapper.convertToEntity(itemDto, owner, itemDto.getRequest());
+        ItemRequest request = null;
+        if (itemDto.getRequestId() != null) {
+            request = requestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> {
+                        log.error("Request with id {} not found", itemDto.getRequestId());
+                        return new NotFoundException(String.format("Request with id %s not found", itemDto.getRequestId()));
+                    });
+        }
+
+        Item item = ItemMapper.convertToEntity(itemDto, owner, request);
 
         item.setOwnerId(userId);
         item.setAvailable(itemDto.getAvailable());
@@ -120,9 +134,30 @@ public class ItemServiceImpl implements ItemService {
                     return new NotFoundException(String.format("Author with id %s not found", userId));
                 });
 
-        if (!bookingRepository.existsBooking(userId, itemId, LocalDateTime.now())) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Booking> bookings = bookingRepository.findByBookerUserIdAndItemItemId(userId, itemId);
+        log.info("Bookings for userId={}, itemId={}: {}", userId, itemId, bookings);
+        log.info("Checking booking for userId={}, itemId={}, current time={}", userId, itemId, now);
+
+        if (bookings.isEmpty()) {
+            log.info("No bookings found for userId={} and itemId={}", userId, itemId);
             throw new ValidationException(String.format(
                     "User with id %s has not booked item with id %s", userId, itemId));
+        }
+
+        boolean existsApprovedBooking = bookings.stream()
+                .anyMatch(b -> b.getStatus() == BookingStatus.APPROVED);
+        if (!existsApprovedBooking) {
+            throw new ValidationException(String.format(
+                    "User with id %s has not booked item with id %s", userId, itemId));
+        }
+
+        boolean isCompleted = bookings.stream()
+                .filter(b -> b.getStatus() == BookingStatus.APPROVED)
+                .anyMatch(b -> b.getEndTime().isBefore(now));
+        if (!isCompleted) {
+            throw new ValidationException(String.format(
+                    "Cannot comment until booking is completed for userId=%s, itemId=%s", userId, itemId));
         }
 
         Comment comment = CommentMapper.convertToEntity(commentDto, item, author);
