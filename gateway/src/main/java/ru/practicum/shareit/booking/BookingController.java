@@ -51,15 +51,15 @@ public class BookingController {
 
 	@PostMapping
 	public ResponseEntity<Object> createBooking(@RequestHeader(HeaderConstants.USER_ID_HEADER) @Positive long userId,
-			@RequestBody @Valid BookItemRequestDto requestDto) {
+												@RequestBody @Valid BookItemRequestDto requestDto) {
 		log.info("Sending POST request for booking {}, userId={}", requestDto, userId);
 		return bookingClient.bookItem(userId, requestDto);
 	}
 
 	@PatchMapping(PathConstants.BOOKING_ID_PATH)
 	public ResponseEntity<Object> approveBooking(@RequestHeader(HeaderConstants.USER_ID_HEADER) @Positive long ownerId,
-									 @PathVariable("booking-id") @Positive Long bookingId,
-									 @RequestParam @NotNull boolean approved) {
+												 @PathVariable("booking-id") @Positive Long bookingId,
+												 @RequestParam @NotNull boolean approved) {
 		log.info("Sending PATCH request for booking with id: {} by user with id: {}", bookingId, ownerId);
 		return bookingClient.approveBooking(bookingId, ownerId, approved);
 	}
