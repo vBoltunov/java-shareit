@@ -6,9 +6,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import shareit.exceptions.ErrorResponse;
-import shareit.exceptions.ForbiddenException;
-import shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.exceptions.ErrorResponse;
+import ru.practicum.shareit.exceptions.ForbiddenException;
+import ru.practicum.shareit.exceptions.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;

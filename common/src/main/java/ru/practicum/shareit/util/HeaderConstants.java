@@ -1,4 +1,4 @@
-package shareit.util;
+package ru.practicum.shareit.util;
 
 public class HeaderConstants {
 

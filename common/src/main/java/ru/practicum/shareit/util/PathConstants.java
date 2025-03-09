@@ -1,4 +1,4 @@
-package shareit.util;
+package ru.practicum.shareit.util;
 
 @SuppressWarnings("squid:S1075")
 public class PathConstants {
