@@ -2,7 +2,9 @@ package ru.practicum.shareit.user.dto;
 
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -18,6 +20,8 @@ import lombok.experimental.FieldDefaults;
  * The `email` field represents the email address of the user and is validated to ensure it is a valid email address.
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
     Long id;
