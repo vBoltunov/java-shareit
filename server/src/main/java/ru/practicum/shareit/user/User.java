@@ -16,23 +16,23 @@ import lombok.experimental.FieldDefaults;
  * Represents a user entity with its essential details.
  *
  * This class includes attributes such as the user's id, name, and email.
+ * It uses the `@Entity` and `@Table` annotations to define it as a JPA entity mapped to the "users" table.
  * It uses the `@Email` validation annotation to ensure that the user's email is a valid email address.
- * It uses the `@NotEmpty` validation annotation to ensure that the user's name is not empty.
  * It uses the `@Data` annotation to automatically generate boilerplate code like getters, setters, and constructors.
  * It uses the `@FieldDefaults` annotation to set all fields' access level to `private`.
  * It uses the `@JsonProperty` annotation to control the serialization and deserialization of the userId field.
  * The `access = JsonProperty.Access.READ_ONLY` parameter ensures that the userId field is only included
  * in the JSON output and cannot be set during deserialization.
  *
- * The `userId` field represents the unique identifier of the user and is read-only.
- * The `name` field represents the name of the user and must not be empty.
+ * The `userId` field represents the unique identifier of the user, with read-only access and automatically generated.
+ * The `name` field represents the name of the user.
  * The `email` field represents the email address of the user and must be a valid email address.
  */
 @Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-@Table(name = "users", schema = "public")
+@Table(name = "users")
 public class User {
     @Id
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
