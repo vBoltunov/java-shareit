@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -30,18 +30,17 @@ import java.util.Collection;
  * a link to the corresponding user request (if the item was created at the request of another user),
  * last booking, next booking, and a collection of comments.
  *
+ * It uses the `@Entity` and `@Table` annotations to define it as a JPA entity mapped to the "items" table.
  * It uses the `@Data` annotation to automatically generate boilerplate code like getters, setters, and constructors.
  * It uses the `@FieldDefaults` annotation to set all fields' access level to `private`.
- * It uses the `@JsonProperty` annotation to control the serialization and deserialization of the itemId field.
- * The `access = JsonProperty.Access.READ_ONLY` parameter ensures that the itemId field is only included
- * in the JSON output and cannot be set during deserialization.
+ * It uses the `@NotBlank` and `@NotNull` annotations to ensure that certain fields are provided and not blank.
  *
- * The `itemId` field represents the unique identifier of the item and is read-only.
- * The `name` field represents the name of the item.
- * The `description` field represents the description of the item.
- * The `isAvailable` field represents the availability status of the item.
+ * The `itemId` field represents the unique identifier of the item, automatically generated.
+ * The `name` field represents the name of the item and must not be null or blank.
+ * The `description` field represents the description of the item and must not be null or blank.
+ * The `isAvailable` field represents the availability status of the item and must not be null.
  * The `ownerId` field represents the owner of the item.
- * The `request` field represents the request associated with the item (temporarily marked as transient).
+ * The `request` field represents the request associated with the item.
  * The `lastBooking` field represents the last booking details of the item.
  * The `nextBooking` field represents the next booking details of the item.
  * The `comments` field represents a collection of comments associated with the item.
@@ -50,25 +49,27 @@ import java.util.Collection;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-@Table(name = "items", schema = "public")
+@Table(name = "items")
 public class Item {
     @Id
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long itemId;
 
+    @NotBlank(message = "Name is required")
     String name;
 
+    @NotBlank(message = "Description is required")
     String description;
 
+    @NotNull(message = "Field 'available' is required")
     @Column(name = "is_available")
     boolean isAvailable;
 
     @Column(name = "owner_id")
     Long ownerId;
 
-    // Временно пометил поле аннотацией Transient, т.к. функционал запросов ещё не реализован
-    @Transient
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
     ItemRequest request;
 
     @ManyToOne(fetch = FetchType.LAZY)
