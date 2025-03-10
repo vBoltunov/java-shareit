@@ -126,7 +126,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void findByUserId_ShouldReturnItems() {
+    void findByUserIdReturnsItems() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             when(itemRepository.findByOwnerId(1L)).thenReturn(Collections.singletonList(item));
             mapper.when(() -> ItemMapper.convertToDto(item)).thenReturn(itemDto);
@@ -139,7 +139,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void getItemById_ShouldReturnItemWithBookingsAndComments() {
+    void getItemByIdWithDetails() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
             when(bookingRepository.findLastBookingForItem(1L)).thenReturn(lastBooking);
@@ -156,13 +156,13 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void getItemById_ShouldThrowNotFoundException_WhenItemNotFound() {
+    void getItemByIdNotFoundError() {
         when(itemRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> itemService.getItemById(1L));
     }
 
     @Test
-    void addItem_ShouldCreateItemWithRequest() {
+    void addItemWithRequest() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             long userId = 1L;
             ItemDto inputDto = new ItemDto();
@@ -189,7 +189,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void addItem_ShouldThrowNotFoundException_WhenRequestNotFound() {
+    void addItemRequestNotFoundError() {
         long userId = 1L;
         ItemDto inputDto = new ItemDto();
         inputDto.setName("Hammer");
@@ -204,7 +204,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void addItem_ShouldThrowValidationException_WhenAvailableNull() {
+    void addItemValidationError() {
         long userId = 1L;
         ItemDto inputDto = new ItemDto();
         inputDto.setName("Hammer");
@@ -217,7 +217,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void updateItem_ShouldThrowNotFoundException_WhenItemNotOwned() {
+    void updateItemNotFoundError() {
         long userId = 1L;
         long itemId = 1L;
         ItemUpdateDto updateDto = new ItemUpdateDto();
@@ -230,7 +230,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void addComment_ShouldAddCommentWithExistingComments() {
+    void addCommentWithExisting() {
         try (MockedStatic<CommentMapper> commentMapper = mockStatic(CommentMapper.class)) {
             long userId = 1L;
             long itemId = 1L;
@@ -256,9 +256,8 @@ class ItemServiceImplTest {
         }
     }
 
-    // Остальные тесты остаются без изменений
     @Test
-    void addItem_ShouldCreateItem() {
+    void addItem() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             long userId = 1L;
             ItemDto inputDto = new ItemDto();
@@ -283,7 +282,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void addItem_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void addItemUserNotFoundError() {
         long userId = 1L;
         ItemDto inputDto = new ItemDto();
         inputDto.setName("Hammer");
@@ -295,7 +294,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void updateItem_ShouldUpdateItem() {
+    void updateItem() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             long userId = 1L;
             long itemId = 1L;
@@ -319,7 +318,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void updateItem_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void updateItemUserNotFoundError() {
         long userId = 1L;
         long itemId = 1L;
         ItemUpdateDto updateDto = new ItemUpdateDto();
@@ -330,7 +329,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void deleteItem_ShouldDeleteItem() {
+    void deleteItem() {
         long userId = 1L;
         long itemId = 1L;
 
@@ -340,7 +339,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void searchItems_ShouldReturnItems() {
+    void searchItems() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             String text = "hammer";
             when(itemRepository.searchItems(text)).thenReturn(Collections.singletonList(item));
@@ -354,14 +353,14 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void searchItems_ShouldReturnEmptyList_WhenTextIsEmpty() {
+    void searchItemsEmptyList() {
         Collection<ItemDto> result = itemService.searchItems("");
 
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void addComment_ShouldThrowValidationException_WhenNoApprovedBooking() {
+    void addCommentValidationError() {
         long userId = 1L;
         long itemId = 1L;
         CommentDto inputComment = new CommentDto();
@@ -376,7 +375,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void updateBookingsForItem_ShouldUpdateBookings() {
+    void updateBookingsForItem() {
         long itemId = 1L;
         when(itemRepository.findById(itemId)).thenReturn(Optional.of(item));
         when(bookingRepository.findLastBookingForItem(itemId)).thenReturn(lastBooking);
