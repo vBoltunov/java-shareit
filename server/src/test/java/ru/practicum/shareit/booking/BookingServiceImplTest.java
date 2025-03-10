@@ -350,7 +350,7 @@ class BookingServiceImplTest {
             when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
             mapper.when(() -> BookingMapper.convertToDto(booking)).thenReturn(bookingDto);
 
-            BookingDto result = bookingService.getBookingById(1L, 2L); // Owner ID
+            BookingDto result = bookingService.getBookingById(1L, 2L);
 
             assertEquals(1L, result.getId());
             assertEquals(bookingDto, result);

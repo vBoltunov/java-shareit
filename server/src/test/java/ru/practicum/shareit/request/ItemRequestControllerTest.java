@@ -119,7 +119,7 @@ class ItemRequestControllerTest {
                         .content(jsonRequest))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.description").value("Need a hammer")); // Возвращается мок
+                .andExpect(jsonPath("$.description").value("Need a hammer"));
     }
 
     @Test

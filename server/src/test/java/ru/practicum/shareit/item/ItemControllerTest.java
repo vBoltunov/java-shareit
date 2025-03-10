@@ -103,8 +103,8 @@ class ItemControllerTest {
         long itemId = 1L;
         ItemUpdateDto updateDto = new ItemUpdateDto();
         updateDto.setName("Updated Hammer");
-        updateDto.setDescription("Updated description"); // Добавляем обязательное поле
-        updateDto.setAvailable(true); // Добавляем обязательное поле
+        updateDto.setDescription("Updated description");
+        updateDto.setAvailable(true);
 
         when(itemService.updateItem(any(ItemUpdateDto.class), eq(userId), eq(itemId))).thenReturn(itemDto);
 

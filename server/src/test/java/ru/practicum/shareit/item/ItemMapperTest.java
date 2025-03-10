@@ -82,7 +82,7 @@ class ItemMapperTest {
         item.setAvailable(false);
 
         ItemUpdateDto updateDto = new ItemUpdateDto();
-        updateDto.setName("New Hammer"); // Остальные поля не указаны
+        updateDto.setName("New Hammer");
 
         ItemMapper.updateItemFields(item, updateDto);
 

@@ -110,7 +110,8 @@ class BookingRepositoryTest {
         entityManager.persist(pastBooking);
         entityManager.flush();
 
-        Collection<Booking> result = bookingRepository.findPastBookingsByBookerId(booker.getUserId(), LocalDateTime.now());
+        Collection<Booking> result = bookingRepository.findPastBookingsByBookerId(
+                booker.getUserId(), LocalDateTime.now());
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
@@ -128,7 +129,8 @@ class BookingRepositoryTest {
         entityManager.persist(futureBooking);
         entityManager.flush();
 
-        Collection<Booking> result = bookingRepository.findFutureBookingsByBookerId(booker.getUserId(), LocalDateTime.now());
+        Collection<Booking> result = bookingRepository.findFutureBookingsByBookerId(
+                booker.getUserId(), LocalDateTime.now());
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
@@ -160,7 +162,7 @@ class BookingRepositoryTest {
                 .setParameter("itemId", item.getItemId())
                 .executeUpdate();
         entityManager.flush();
-        entityManager.clear(); // Очищаем кэш первого уровня, чтобы исключить старые данные
+        entityManager.clear();
 
         Booking futureBooking = new Booking();
         futureBooking.setBooker(booker);
@@ -185,7 +187,8 @@ class BookingRepositoryTest {
 
     @Test
     void findByBookerIdAndItemId() {
-        List<Booking> result = bookingRepository.findByBookerUserIdAndItemItemId(booker.getUserId(), item.getItemId());
+        List<Booking> result = bookingRepository.findByBookerUserIdAndItemItemId(
+                booker.getUserId(), item.getItemId());
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());

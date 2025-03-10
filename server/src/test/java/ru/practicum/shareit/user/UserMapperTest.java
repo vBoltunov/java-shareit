@@ -60,7 +60,7 @@ class UserMapperTest {
         user.setEmail("old@example.com");
 
         UserDto userDto = new UserDto();
-        userDto.setName("New Name"); // Email не указан
+        userDto.setName("New Name");
 
         UserMapper.updateUserFields(user, userDto);
 
