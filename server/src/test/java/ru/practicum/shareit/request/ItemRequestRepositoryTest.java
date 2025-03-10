@@ -43,7 +43,7 @@ class ItemRequestRepositoryTest {
     }
 
     @Test
-    void findByUserId_ShouldReturnRequests() {
+    void findRequestsByUserId() {
         Collection<ItemRequest> result = itemRequestRepository.findByUserId(user.getUserId());
 
         assertFalse(result.isEmpty());
@@ -52,7 +52,7 @@ class ItemRequestRepositoryTest {
     }
 
     @Test
-    void deleteByUserIdAndRequestId_ShouldDeleteRequest() {
+    void deleteByUserIdAndRequestId() {
         itemRequestRepository.deleteByUserIdAndRequestId(user.getUserId(), itemRequest.getRequestId());
 
         ItemRequest deleted = itemRequestRepository.findById(itemRequest.getRequestId()).orElse(null);
