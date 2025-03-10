@@ -70,7 +70,7 @@ class ErrorHandlerTest {
     }
 
     @Test
-    void handleNotFoundException_ShouldReturn404() throws Exception {
+    void handleNotFoundExceptio() throws Exception {
         mockMvc.perform(get("/test/not-found")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -79,7 +79,7 @@ class ErrorHandlerTest {
     }
 
     @Test
-    void handleForbiddenException_ShouldReturn403() throws Exception {
+    void handleForbiddenException() throws Exception {
         mockMvc.perform(get("/test/forbidden")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
@@ -88,7 +88,7 @@ class ErrorHandlerTest {
     }
 
     @Test
-    void handleInternalError_ShouldReturn500() throws Exception {
+    void handleInternalError() throws Exception {
         mockMvc.perform(get("/test/internal-error")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
@@ -97,7 +97,7 @@ class ErrorHandlerTest {
     }
 
     @Test
-    void handleIllegalArgumentException_ShouldReturn409() throws Exception {
+    void handleIllegalArgumentException() throws Exception {
         mockMvc.perform(get("/test/illegal-argument")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
@@ -106,7 +106,7 @@ class ErrorHandlerTest {
     }
 
     @Test
-    void handleEmailError_ShouldReturn400() throws Exception {
+    void handleEmailError() throws Exception {
         mockMvc.perform(get("/test/email-error")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -115,7 +115,7 @@ class ErrorHandlerTest {
     }
 
     @Test
-    void handleValidationException_ShouldReturn400() throws Exception {
+    void handleValidationException() throws Exception {
         mockMvc.perform(post("/test/validation-error")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"field\": \"\"}")
