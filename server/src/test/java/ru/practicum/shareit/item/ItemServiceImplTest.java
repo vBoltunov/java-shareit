@@ -209,7 +209,6 @@ class ItemServiceImplTest {
         ItemDto inputDto = new ItemDto();
         inputDto.setName("Hammer");
         inputDto.setDescription("A hammer");
-        // available is null
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
@@ -230,7 +229,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void addCommentWithExisting() {
+    void addComment() {
         try (MockedStatic<CommentMapper> commentMapper = mockStatic(CommentMapper.class)) {
             long userId = 1L;
             long itemId = 1L;
@@ -241,7 +240,7 @@ class ItemServiceImplTest {
             when(userRepository.findById(userId)).thenReturn(Optional.of(user));
             when(bookingRepository.findByBookerUserIdAndItemItemId(userId, itemId))
                     .thenReturn(Collections.singletonList(lastBooking));
-            // Используем изменяемый список
+
             when(commentRepository.findByItem_ItemId(itemId))
                     .thenReturn(new ArrayList<>(Collections.singletonList(comment)));
             commentMapper.when(() -> CommentMapper.convertToEntity(inputComment, item, user)).thenReturn(comment);
