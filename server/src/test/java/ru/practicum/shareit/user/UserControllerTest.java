@@ -46,7 +46,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getUsers_ShouldReturnUsers() throws Exception {
+    void getUsers() throws Exception {
         when(userService.getUsers()).thenReturn(Collections.singletonList(userDto));
 
         mockMvc.perform(get("/users"))
@@ -56,7 +56,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getUser_ShouldReturnUser() throws Exception {
+    void getUser() throws Exception {
         long userId = 1L;
         when(userService.getUserById(userId)).thenReturn(userDto);
 
@@ -67,7 +67,7 @@ class UserControllerTest {
     }
 
     @Test
-    void createUser_ShouldCreateUser() throws Exception {
+    void createUser() throws Exception {
         UserDto inputDto = new UserDto();
         inputDto.setName("John");
         inputDto.setEmail("john@example.com");
@@ -83,7 +83,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUser_ShouldUpdateUser() throws Exception {
+    void updateUser() throws Exception {
         long userId = 1L;
         UserDto inputDto = new UserDto();
         inputDto.setName("Updated John");
@@ -99,7 +99,7 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUser_ShouldDeleteUser() throws Exception {
+    void deleteUser() throws Exception {
         long userId = 1L;
 
         mockMvc.perform(delete("/users/{user-id}", userId))
