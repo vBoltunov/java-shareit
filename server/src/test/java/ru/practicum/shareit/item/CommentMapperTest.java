@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class CommentMapperTest {
 
     @Test
-    void convertToDto_ShouldMapCommentToDto() {
+    void convertToDto() {
         User author = new User();
         author.setUserId(1L);
         author.setName("John");
@@ -36,7 +36,7 @@ class CommentMapperTest {
     }
 
     @Test
-    void convertToEntity_ShouldMapDtoToComment() {
+    void convertToEntity() {
         User author = new User();
         author.setUserId(1L);
         Item item = new Item();
