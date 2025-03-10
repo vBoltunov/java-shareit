@@ -45,7 +45,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void findByOwnerId_ShouldReturnItems() {
+    void findItemByOwnerId() {
         Collection<Item> result = itemRepository.findByOwnerId(owner.getUserId());
 
         assertFalse(result.isEmpty());
@@ -54,7 +54,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void deleteByOwnerIdAndItemId_ShouldDeleteItem() {
+    void deleteByOwnerIdAndItemId() {
         itemRepository.deleteByOwnerIdAndItemId(owner.getUserId(), item.getItemId());
 
         Item deleted = itemRepository.findById(item.getItemId()).orElse(null);
@@ -62,7 +62,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void searchItems_ShouldReturnMatchingItems() {
+    void searchItems() {
         Collection<Item> result = itemRepository.searchItems("hammer");
 
         assertFalse(result.isEmpty());
@@ -71,7 +71,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void searchItems_ShouldReturnEmpty_WhenNoMatch() {
+    void searchItemsNoMatch() {
         Collection<Item> result = itemRepository.searchItems("drill");
 
         assertTrue(result.isEmpty());
