@@ -1,12 +1,13 @@
 package ru.practicum.shareit.booking;
 
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
@@ -15,16 +16,14 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Transactional
 class BookingRepositoryTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -108,7 +107,8 @@ class BookingRepositoryTest {
         pastBooking.setStartTime(LocalDateTime.now().minusDays(2));
         pastBooking.setEndTime(LocalDateTime.now().minusDays(1));
         pastBooking.setStatus(BookingStatus.APPROVED);
-        entityManager.persistAndFlush(pastBooking);
+        entityManager.persist(pastBooking);
+        entityManager.flush();
 
         Collection<Booking> result = bookingRepository.findPastBookingsByBookerId(booker.getUserId(), LocalDateTime.now());
 
@@ -125,7 +125,8 @@ class BookingRepositoryTest {
         futureBooking.setStartTime(LocalDateTime.now().plusDays(1));
         futureBooking.setEndTime(LocalDateTime.now().plusDays(2));
         futureBooking.setStatus(BookingStatus.APPROVED);
-        entityManager.persistAndFlush(futureBooking);
+        entityManager.persist(futureBooking);
+        entityManager.flush();
 
         Collection<Booking> result = bookingRepository.findFutureBookingsByBookerId(booker.getUserId(), LocalDateTime.now());
 
@@ -142,7 +143,8 @@ class BookingRepositoryTest {
         pastBooking.setStartTime(LocalDateTime.now().minusDays(2));
         pastBooking.setEndTime(LocalDateTime.now().minusDays(1));
         pastBooking.setStatus(BookingStatus.APPROVED);
-        entityManager.persistAndFlush(pastBooking);
+        entityManager.persist(pastBooking);
+        entityManager.flush();
 
         Booking result = bookingRepository.findLastBookingForItem(item.getItemId());
 
@@ -153,13 +155,19 @@ class BookingRepositoryTest {
     @Test
     @DirtiesContext
     void findNextBookingForItem_ShouldReturnNextBooking() {
+        entityManager.createQuery("DELETE FROM Booking b WHERE b.item.itemId = :itemId")
+                .setParameter("itemId", item.getItemId())
+                .executeUpdate();
+        entityManager.flush();
+
         Booking futureBooking = new Booking();
         futureBooking.setBooker(booker);
         futureBooking.setItem(item);
         futureBooking.setStartTime(LocalDateTime.now().plusDays(1));
         futureBooking.setEndTime(LocalDateTime.now().plusDays(2));
         futureBooking.setStatus(BookingStatus.APPROVED);
-        entityManager.persistAndFlush(futureBooking);
+        entityManager.persist(futureBooking);
+        entityManager.flush();
 
         Booking result = bookingRepository.findNextBookingForItem(item.getItemId());
 
