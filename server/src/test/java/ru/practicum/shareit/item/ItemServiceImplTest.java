@@ -126,7 +126,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void findByUserIdReturnsItems() {
+    void findItemByUserId() {
         try (MockedStatic<ItemMapper> mapper = mockStatic(ItemMapper.class)) {
             when(itemRepository.findByOwnerId(1L)).thenReturn(Collections.singletonList(item));
             mapper.when(() -> ItemMapper.convertToDto(item)).thenReturn(itemDto);
