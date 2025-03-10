@@ -50,7 +50,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUsers_ShouldReturnUsers() {
+    void getUsers() {
         try (MockedStatic<UserMapper> mapper = mockStatic(UserMapper.class)) {
             when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
             mapper.when(() -> UserMapper.convertToDto(user)).thenReturn(userDto);
@@ -63,7 +63,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById_ShouldReturnUser() {
+    void getUserById() {
         try (MockedStatic<UserMapper> mapper = mockStatic(UserMapper.class)) {
             when(userRepository.findById(1L)).thenReturn(Optional.of(user));
             mapper.when(() -> UserMapper.convertToDto(user)).thenReturn(userDto);
@@ -76,14 +76,14 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void getUserByIdNotFoundError() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> userService.getUserById(1L));
     }
 
     @Test
-    void createUser_ShouldCreateUser() {
+    void createUser() {
         try (MockedStatic<UserMapper> mapper = mockStatic(UserMapper.class)) {
             UserDto inputDto = new UserDto();
             inputDto.setName("John");
@@ -102,7 +102,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createUser_ShouldThrowIllegalArgumentException_WhenEmailExists() {
+    void createUserEmailExistsError() {
         UserDto inputDto = new UserDto();
         inputDto.setName("John");
         inputDto.setEmail("john@example.com");
@@ -113,7 +113,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser_ShouldUpdateUser() {
+    void updateUser() {
         try (MockedStatic<UserMapper> mapper = mockStatic(UserMapper.class)) {
             long userId = 1L;
             UserDto inputDto = new UserDto();
@@ -134,7 +134,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void updateUserNotFoundError() {
         long userId = 1L;
         UserDto inputDto = new UserDto();
         inputDto.setName("Updated John");
@@ -145,7 +145,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUser_ShouldDeleteUser() {
+    void deleteUser() {
         long userId = 1L;
         when(userRepository.existsById(userId)).thenReturn(true);
 
@@ -155,7 +155,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUser_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void deleteUserNotFoundError() {
         long userId = 1L;
         when(userRepository.existsById(userId)).thenReturn(false);
 
@@ -163,7 +163,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser_ShouldThrowIllegalArgumentException_WhenEmailExists() {
+    void updateUserEmailExistsError() {
         long userId = 1L;
         UserDto inputDto = new UserDto();
         inputDto.setEmail("existing@example.com");
@@ -175,7 +175,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void fetchUserById_ShouldThrowIllegalArgumentException_WhenIdIsNull() {
+    void fetchUserByIdNullError() {
         assertThrows(IllegalArgumentException.class, () -> userService.getUserById(null));
     }
 }
