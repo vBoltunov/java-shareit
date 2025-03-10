@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.booking.enums.BookingStatus;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
@@ -148,6 +149,7 @@ class BookingRepositoryTest {
     }
 
     @Test
+    @DirtiesContext
     void findNextBookingForItem_ShouldReturnNextBooking() {
         Booking futureBooking = new Booking();
         futureBooking.setBooker(booker);
