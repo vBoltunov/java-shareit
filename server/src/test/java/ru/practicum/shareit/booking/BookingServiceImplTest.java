@@ -93,7 +93,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByOwnerId_ShouldReturnBookings() {
+    void getBookingsByOwnerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(userRepository.existsById(2L)).thenReturn(true);
             when(bookingRepository.findByItem_OwnerId(2L)).thenReturn(Collections.singletonList(booking));
@@ -107,14 +107,13 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByOwnerId_ShouldThrowNotFoundException_WhenOwnerNotFound() {
+    void getBookingsByOwnerIdNotFoundError() {
         when(userRepository.existsById(2L)).thenReturn(false);
         assertThrows(NotFoundException.class, () -> bookingService.getBookingsByOwnerId(2L));
     }
 
-    // Остальные тесты остаются без изменений
     @Test
-    void createBooking_ShouldCreateBooking() {
+    void createBooking() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(userRepository.findById(1L)).thenReturn(Optional.of(booker));
             when(itemRepository.findById(1L)).thenReturn(Optional.of(item));
@@ -130,13 +129,13 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createBooking_ShouldThrowValidationException_WhenDatesNull() {
+    void createBookingDatesNullError() {
         bookingDto.setStartTime(null);
         assertThrows(ValidationException.class, () -> bookingService.createBooking(bookingDto, 1L));
     }
 
     @Test
-    void createBooking_ShouldThrowNotFoundException_WhenBookerNotFound() {
+    void createBookingBookerNotFoundError() {
         bookingDto.setStartTime(fixedTime.plusHours(1));
         bookingDto.setEndTime(fixedTime.plusHours(2));
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
@@ -144,7 +143,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createBooking_ShouldThrowValidationException_WhenItemNotAvailable() {
+    void createBookingItemNotAvailableError() {
         bookingDto.setStartTime(fixedTime.plusHours(1));
         bookingDto.setEndTime(fixedTime.plusHours(2));
         item.setAvailable(false);
@@ -154,7 +153,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createBooking_ShouldThrowNotFoundException_WhenOwnerBooksOwnItem() {
+    void createBookingOwnerError() {
         bookingDto.setStartTime(fixedTime.plusHours(1));
         bookingDto.setEndTime(fixedTime.plusHours(2));
         when(userRepository.findById(2L)).thenReturn(Optional.of(owner));
@@ -163,7 +162,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createBooking_ShouldThrowValidationException_WhenDatesInvalid() {
+    void createBookingDatesInvalidError() {
         bookingDto.setStartTime(fixedTime.plusHours(2));
         bookingDto.setEndTime(fixedTime.plusHours(1));
         when(userRepository.findById(1L)).thenReturn(Optional.of(booker));
@@ -172,7 +171,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void approveBooking_ShouldApproveBooking() {
+    void approveBookingApproved() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
             when(bookingRepository.save(booking)).thenReturn(booking);
@@ -186,7 +185,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void approveBooking_ShouldRejectBooking() {
+    void approveBookingRejected() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
             when(bookingRepository.save(booking)).thenReturn(booking);
@@ -200,20 +199,20 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void approveBooking_ShouldThrowForbiddenException_WhenNotOwner() {
+    void approveBookingNotOwnerError() {
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
         assertThrows(ForbiddenException.class, () -> bookingService.approveBooking(1L, 3L, true));
     }
 
     @Test
-    void approveBooking_ShouldThrowValidationException_WhenNotWaiting() {
+    void approveBookingNotWaitingError() {
         booking.setStatus(BookingStatus.APPROVED);
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
         assertThrows(ValidationException.class, () -> bookingService.approveBooking(1L, 2L, true));
     }
 
     @Test
-    void getBookingsByBookerIdAndState_ShouldReturnCurrentBookings() {
+    void getCurrentBookingsByBookerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class);
              MockedStatic<LocalDateTime> localDateTime = mockStatic(LocalDateTime.class)) {
             Booking currentBooking = new Booking();
@@ -237,7 +236,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdAndState_ShouldReturnPastBookings() {
+    void getPastBookingsByBookerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class);
              MockedStatic<LocalDateTime> localDateTime = mockStatic(LocalDateTime.class)) {
             Booking pastBooking = new Booking();
@@ -261,7 +260,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdAndState_ShouldReturnFutureBookings() {
+    void getFutureBookingsByBookerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class);
              MockedStatic<LocalDateTime> localDateTime = mockStatic(LocalDateTime.class)) {
             Booking futureBooking = new Booking();
@@ -285,7 +284,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdAndState_ShouldReturnWaitingBookings() {
+    void getWaitingBookingsByBookerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(bookingRepository.findByBooker_UserIdAndStatus(1L, BookingStatus.WAITING))
                     .thenReturn(Collections.singletonList(booking));
@@ -299,7 +298,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdAndState_ShouldReturnRejectedBookings() {
+    void getRejectedBookingsByBookerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             Booking rejectedBooking = new Booking();
             rejectedBooking.setId(1L);
@@ -319,7 +318,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdAndState_ShouldReturnAllBookings() {
+    void getAllBookingsByBookerId() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(bookingRepository.findByBooker_UserId(1L))
                     .thenReturn(Collections.singletonList(booking));
@@ -333,7 +332,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBooking_ShouldReturnBookingForBooker() {
+    void getBookingForBooker() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
             mapper.when(() -> BookingMapper.convertToDto(booking)).thenReturn(bookingDto);
@@ -346,7 +345,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBooking_ShouldReturnBookingForOwner() {
+    void getBookingForOwner() {
         try (MockedStatic<BookingMapper> mapper = mockStatic(BookingMapper.class)) {
             when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
             mapper.when(() -> BookingMapper.convertToDto(booking)).thenReturn(bookingDto);
@@ -359,14 +358,14 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBooking_ShouldThrowNotFoundException_WhenBookingNotFound() {
+    void getBookingNotFoundError() {
         when(bookingRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> bookingService.getBookingById(1L, 1L));
     }
 
     @Test
-    void getBooking_ShouldThrowNotFoundException_WhenNotBookerOrOwner() {
+    void getBookingAccessError() {
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
-        assertThrows(NotFoundException.class, () -> bookingService.getBookingById(1L, 3L)); // Neither booker nor owner
+        assertThrows(NotFoundException.class, () -> bookingService.getBookingById(1L, 3L));
     }
 }
