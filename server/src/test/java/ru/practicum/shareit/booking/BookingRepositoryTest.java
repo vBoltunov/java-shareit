@@ -154,11 +154,13 @@ class BookingRepositoryTest {
 
     @Test
     @DirtiesContext
+    @Transactional
     void findNextBookingForItem_ShouldReturnNextBooking() {
         entityManager.createQuery("DELETE FROM Booking b WHERE b.item.itemId = :itemId")
                 .setParameter("itemId", item.getItemId())
                 .executeUpdate();
         entityManager.flush();
+        entityManager.clear(); // Очищаем кэш первого уровня, чтобы исключить старые данные
 
         Booking futureBooking = new Booking();
         futureBooking.setBooker(booker);
@@ -168,6 +170,12 @@ class BookingRepositoryTest {
         futureBooking.setStatus(BookingStatus.APPROVED);
         entityManager.persist(futureBooking);
         entityManager.flush();
+
+        List<Booking> allBookings = entityManager.createQuery(
+                "SELECT b FROM Booking b WHERE b.item.itemId = :itemId", Booking.class)
+                .setParameter("itemId", item.getItemId())
+                .getResultList();
+        System.out.println("All bookings after setup: " + allBookings);
 
         Booking result = bookingRepository.findNextBookingForItem(item.getItemId());
 
