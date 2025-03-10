@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
+@Transactional
 class BookingRepositoryTest {
 
     @Autowired
