@@ -64,7 +64,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findByBooker_UserId_ShouldReturnBookings() {
+    void findByBookerId() {
         Collection<Booking> result = bookingRepository.findByBooker_UserId(booker.getUserId());
 
         assertFalse(result.isEmpty());
@@ -73,7 +73,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findByItem_OwnerId_ShouldReturnBookings() {
+    void findByItemOwnerId() {
         Collection<Booking> result = bookingRepository.findByItem_OwnerId(owner.getUserId());
 
         assertFalse(result.isEmpty());
@@ -82,7 +82,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findByBooker_UserIdAndStatus_ShouldReturnBookings() {
+    void findByBookerIdAndStatus() {
         Collection<Booking> result = bookingRepository.findByBooker_UserIdAndStatus(booker.getUserId(), BookingStatus.APPROVED);
 
         assertFalse(result.isEmpty());
@@ -91,7 +91,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findCurrentBookingsByBookerId_ShouldReturnCurrentBookings() {
+    void findCurrentBookingsByBookerId() {
         Collection<Booking> result = bookingRepository.findCurrentBookingsByBookerId(booker.getUserId(), LocalDateTime.now());
 
         assertFalse(result.isEmpty());
@@ -100,7 +100,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findPastBookingsByBookerId_ShouldReturnPastBookings() {
+    void findPastBookingsByBookerId() {
         Booking pastBooking = new Booking();
         pastBooking.setBooker(booker);
         pastBooking.setItem(item);
@@ -118,7 +118,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findFutureBookingsByBookerId_ShouldReturnFutureBookings() {
+    void findFutureBookingsByBookerId() {
         Booking futureBooking = new Booking();
         futureBooking.setBooker(booker);
         futureBooking.setItem(item);
@@ -136,7 +136,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findLastBookingForItem_ShouldReturnLastBooking() {
+    void findLastBookingForItem() {
         Booking pastBooking = new Booking();
         pastBooking.setBooker(booker);
         pastBooking.setItem(item);
@@ -155,7 +155,7 @@ class BookingRepositoryTest {
     @Test
     @DirtiesContext
     @Transactional
-    void findNextBookingForItem_ShouldReturnNextBooking() {
+    void findNextBookingForItem() {
         entityManager.createQuery("DELETE FROM Booking b WHERE b.item.itemId = :itemId")
                 .setParameter("itemId", item.getItemId())
                 .executeUpdate();
@@ -184,7 +184,7 @@ class BookingRepositoryTest {
     }
 
     @Test
-    void findByBookerUserIdAndItemItemId_ShouldReturnBookings() {
+    void findByBookerIdAndItemId() {
         List<Booking> result = bookingRepository.findByBookerUserIdAndItemItemId(booker.getUserId(), item.getItemId());
 
         assertFalse(result.isEmpty());
