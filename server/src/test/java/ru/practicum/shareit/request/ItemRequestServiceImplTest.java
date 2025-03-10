@@ -61,7 +61,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void addRequest_ShouldAddRequest() {
+    void addRequest() {
         try (MockedStatic<ItemRequestMapper> mapper = mockStatic(ItemRequestMapper.class)) {
             when(userRepository.findById(1L)).thenReturn(Optional.of(user));
             mapper.when(() -> ItemRequestMapper.convertToEntity(requestDto, user)).thenReturn(request);
@@ -77,13 +77,13 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void addRequest_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void addRequestUserNotFoundError() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> requestService.addRequest(requestDto, 1L));
     }
 
     @Test
-    void updateRequest_ShouldUpdateRequest() {
+    void updateRequest() {
         try (MockedStatic<ItemRequestMapper> mapper = mockStatic(ItemRequestMapper.class)) {
             when(userRepository.existsById(1L)).thenReturn(true);
             when(requestRepository.findByUserId(1L)).thenReturn(Collections.singletonList(request));
@@ -103,20 +103,20 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void updateRequest_ShouldThrowNotFoundException_WhenUserNotFound() {
+    void updateRequestUserNotFoundError() {
         when(userRepository.existsById(1L)).thenReturn(false);
         assertThrows(NotFoundException.class, () -> requestService.updateRequest(requestDto, 1L, 1L));
     }
 
     @Test
-    void updateRequest_ShouldThrowNotFoundException_WhenRequestNotFound() {
+    void updateRequestNotFoundError() {
         when(userRepository.existsById(1L)).thenReturn(true);
         when(requestRepository.findByUserId(1L)).thenReturn(Collections.emptyList());
         assertThrows(NotFoundException.class, () -> requestService.updateRequest(requestDto, 1L, 1L));
     }
 
     @Test
-    void getAllRequestsExceptUser_ShouldReturnRequests() {
+    void getAllRequestsExceptUser() {
         try (MockedStatic<ItemRequestMapper> mapper = mockStatic(ItemRequestMapper.class)) {
             ItemRequest otherRequest = new ItemRequest();
             otherRequest.setRequestId(2L);
@@ -136,7 +136,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void findByUserId_ShouldReturnRequests() {
+    void findRequestsByUserId() {
         try (MockedStatic<ItemRequestMapper> mapper = mockStatic(ItemRequestMapper.class)) {
             when(requestRepository.findByUserId(1L)).thenReturn(Collections.singletonList(request));
             mapper.when(() -> ItemRequestMapper.convertToDto(request)).thenReturn(requestDto);
@@ -149,7 +149,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getRequestById_ShouldReturnRequest() {
+    void getRequestById() {
         try (MockedStatic<ItemRequestMapper> mapper = mockStatic(ItemRequestMapper.class)) {
             when(requestRepository.findById(1L)).thenReturn(Optional.of(request));
             mapper.when(() -> ItemRequestMapper.convertToDto(request)).thenReturn(requestDto);
@@ -162,19 +162,19 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getRequestById_ShouldThrowNotFoundException_WhenRequestNotFound() {
+    void getRequestByIdNotFoundError() {
         when(requestRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> requestService.getRequestById(1L));
     }
 
     @Test
-    void getRequestById_ShouldThrowNotFoundException_WhenRequestIdNegative() {
+    void getRequestByNegativeIdError() {
         when(requestRepository.findById(-1L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> requestService.getRequestById(-1L));
     }
 
     @Test
-    void deleteRequest_ShouldDeleteRequest() {
+    void deleteRequest() {
         requestService.deleteRequest(1L, 1L);
         verify(requestRepository).deleteByUserIdAndRequestId(1L, 1L);
     }
