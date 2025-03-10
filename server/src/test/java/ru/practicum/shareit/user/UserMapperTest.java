@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UserMapperTest {
 
     @Test
-    void convertToDto_ShouldMapUserToDto() {
+    void convertToDto() {
         User user = new User();
         user.setUserId(1L);
         user.setName("John");
@@ -22,7 +22,7 @@ class UserMapperTest {
     }
 
     @Test
-    void convertToEntity_ShouldMapDtoToUser() {
+    void convertToEntity() {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setName("John");
@@ -36,7 +36,7 @@ class UserMapperTest {
     }
 
     @Test
-    void updateUserFields_ShouldUpdateFields() {
+    void updateUserFields() {
         User user = new User();
         user.setUserId(1L);
         user.setName("Old Name");
@@ -53,7 +53,7 @@ class UserMapperTest {
     }
 
     @Test
-    void updateUserFields_ShouldUpdateOnlyProvidedFields() {
+    void updateUserProvidedFields() {
         User user = new User();
         user.setUserId(1L);
         user.setName("Old Name");
