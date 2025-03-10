@@ -57,7 +57,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void getRequests_ShouldReturnRequestsForUser() throws Exception {
+    void getRequests() throws Exception {
         long userId = 1L;
         when(requestService.findByUserId(userId)).thenReturn(Collections.singletonList(requestDto));
 
@@ -72,7 +72,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void getRequest_ShouldReturnSingleRequest() throws Exception {
+    void getRequest() throws Exception {
         long requestId = 1L;
         when(requestService.getRequestById(requestId)).thenReturn(requestDto);
 
@@ -85,7 +85,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void addRequest_ShouldCreateRequest() throws Exception {
+    void addRequest() throws Exception {
         long userId = 1L;
         ItemRequestDto inputDto = new ItemRequestDto();
         inputDto.setDescription("Need a hammer");
@@ -104,7 +104,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void updateRequest_ShouldUpdateRequest() throws Exception {
+    void updateRequest() throws Exception {
         long userId = 1L;
         long requestId = 1L;
         ItemRequestDto inputDto = new ItemRequestDto();
@@ -123,7 +123,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void deleteRequest_ShouldDeleteRequest() throws Exception {
+    void deleteRequest() throws Exception {
         long userId = 1L;
         long requestId = 1L;
 
@@ -133,7 +133,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void getAllRequests_ShouldReturnAllRequests() throws Exception {
+    void getAllRequests() throws Exception {
         long userId = 1L;
         when(requestService.getAllRequestsExceptUser(userId)).thenReturn(Collections.singletonList(requestDto));
 
