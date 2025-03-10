@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BookingMapperTest {
 
     @Test
-    void convertToDto_ShouldMapBookingToDto() {
+    void convertToDto() {
         User booker = new User();
         booker.setUserId(1L);
         Item item = new Item();
@@ -37,7 +37,7 @@ class BookingMapperTest {
     }
 
     @Test
-    void convertToEntity_ShouldMapDtoToBooking() {
+    void convertToEntity() {
         User booker = new User();
         booker.setUserId(1L);
         Item item = new Item();
