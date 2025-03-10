@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ItemRequestMapperTest {
 
     @Test
-    void convertToDto_ShouldMapRequestToDto() {
+    void convertToDto() {
         User user = new User();
         user.setUserId(1L);
         ItemRequest request = new ItemRequest();
@@ -31,7 +31,7 @@ class ItemRequestMapperTest {
     }
 
     @Test
-    void convertToEntity_ShouldMapDtoToRequest() {
+    void convertToEntity() {
         User user = new User();
         user.setUserId(1L);
         ItemRequestDto dto = new ItemRequestDto();
@@ -45,7 +45,7 @@ class ItemRequestMapperTest {
     }
 
     @Test
-    void updateRequestFields_ShouldUpdateFields() {
+    void updateRequestFields() {
         ItemRequest request = new ItemRequest();
         request.setDescription("Old desc");
         request.setCreated(LocalDateTime.now().minusDays(1));
