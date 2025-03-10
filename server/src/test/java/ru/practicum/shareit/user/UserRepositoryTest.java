@@ -20,7 +20,7 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    void existsByEmail_ShouldReturnTrue_WhenEmailExists() {
+    void existsByEmailTrue() {
         User user = new User();
         user.setName("John");
         user.setEmail("john@example.com");
@@ -32,14 +32,14 @@ class UserRepositoryTest {
     }
 
     @Test
-    void existsByEmail_ShouldReturnFalse_WhenEmailDoesNotExist() {
+    void existsByEmailFalse() {
         boolean exists = userRepository.existsByEmail("nonexistent@example.com");
 
         assertFalse(exists);
     }
 
     @Test
-    void findById_ShouldReturnUser() {
+    void findUserById() {
         User user = new User();
         user.setName("John");
         user.setEmail("john@example.com");
