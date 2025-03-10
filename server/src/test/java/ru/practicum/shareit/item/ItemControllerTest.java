@@ -59,7 +59,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void getItems_ShouldReturnItems() throws Exception {
+    void getItems() throws Exception {
         long userId = 1L;
         when(itemService.findByUserId(userId)).thenReturn(Collections.singletonList(itemDto));
 
@@ -70,7 +70,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void getItem_ShouldReturnItem() throws Exception {
+    void getItem() throws Exception {
         long itemId = 1L;
         when(itemService.getItemById(itemId)).thenReturn(itemDto);
 
@@ -80,7 +80,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void addItem_ShouldCreateItem() throws Exception {
+    void addItem() throws Exception {
         long userId = 1L;
         ItemDto inputDto = new ItemDto();
         inputDto.setName("Hammer");
@@ -98,7 +98,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void updateItem_ShouldUpdateItem() throws Exception {
+    void updateItem() throws Exception {
         long userId = 1L;
         long itemId = 1L;
         ItemUpdateDto updateDto = new ItemUpdateDto();
@@ -117,7 +117,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void deleteItem_ShouldDeleteItem() throws Exception {
+    void deleteItem() throws Exception {
         long userId = 1L;
         long itemId = 1L;
 
@@ -129,7 +129,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void searchItems_ShouldReturnItems() throws Exception {
+    void searchItems() throws Exception {
         String text = "hammer";
         when(itemService.searchItems(text)).thenReturn(Collections.singletonList(itemDto));
 
@@ -140,7 +140,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void addComment_ShouldAddComment() throws Exception {
+    void addComment() throws Exception {
         long userId = 1L;
         long itemId = 1L;
         CommentDto inputComment = new CommentDto();
