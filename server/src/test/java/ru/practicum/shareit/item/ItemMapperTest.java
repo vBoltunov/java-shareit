@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ItemMapperTest {
 
     @Test
-    void convertToDto_ShouldMapItemToDto() {
+    void convertToDto() {
         Item item = new Item();
         item.setItemId(1L);
         item.setName("Hammer");
@@ -36,7 +36,7 @@ class ItemMapperTest {
     }
 
     @Test
-    void convertToEntity_ShouldMapDtoToItem() {
+    void convertToEntity() {
         User owner = new User();
         owner.setUserId(1L);
         ItemDto itemDto = new ItemDto();
@@ -54,7 +54,7 @@ class ItemMapperTest {
     }
 
     @Test
-    void updateItemFields_ShouldUpdateFields() {
+    void updateItemFields() {
         Item item = new Item();
         item.setItemId(1L);
         item.setName("Old Hammer");
@@ -74,7 +74,7 @@ class ItemMapperTest {
     }
 
     @Test
-    void updateItemFields_ShouldUpdateOnlyProvidedFields() {
+    void updateItemProvidedFields() {
         Item item = new Item();
         item.setItemId(1L);
         item.setName("Old Hammer");
