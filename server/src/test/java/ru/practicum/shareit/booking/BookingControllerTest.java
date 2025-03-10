@@ -56,7 +56,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void getBookingsByBookerId_ShouldReturnBookings() throws Exception {
+    void getBookingsByBookerId() throws Exception {
         long bookerId = 1L;
         when(bookingService.getBookingsByBookerIdAndState(bookerId, BookingState.ALL))
                 .thenReturn(Collections.singletonList(bookingDto));
@@ -71,7 +71,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void getBookingsByOwnerId_ShouldReturnBookings() throws Exception {
+    void getBookingsByOwnerId() throws Exception {
         long ownerId = 2L;
         when(bookingService.getBookingsByOwnerId(ownerId))
                 .thenReturn(Collections.singletonList(bookingDto));
@@ -84,7 +84,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void getBookingById_ShouldReturnBooking() throws Exception {
+    void getBookingById() throws Exception {
         long userId = 1L;
         long bookingId = 1L;
         when(bookingService.getBookingById(bookingId, userId)).thenReturn(bookingDto);
@@ -97,7 +97,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void createBooking_ShouldCreateBooking() throws Exception {
+    void createBooking() throws Exception {
         long bookerId = 1L;
         BookingDto inputDto = new BookingDto();
         inputDto.setStartTime(LocalDateTime.now().plusDays(1));
@@ -118,7 +118,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void approveBooking_ShouldApproveBooking() throws Exception {
+    void approveBooking() throws Exception {
         long ownerId = 2L;
         long bookingId = 1L;
         bookingDto.setStatus(BookingStatus.APPROVED);
